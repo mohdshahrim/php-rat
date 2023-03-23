@@ -1,2 +1,5 @@
 # php-rat
-a simple remote access tool (RAT) for PHP
+A simple remote access tool (RAT) for PHP
+
+For learning purpose only, "main.php" is curated for Windows server.
+
